@@ -105,11 +105,11 @@ def operaciones_persona():
             return {"filas_afectadas": persona.insertar(jsonDatos['nombre'], jsonDatos['apellido_paterno'], jsonDatos['apellido_materno'], jsonDatos['edad'], jsonDatos['sexo'])}
         elif request.method == 'PUT':
             return {"filas_afectadas": persona.actualizar(jsonDatos['id'], jsonDatos['nombre'], jsonDatos['apellido_paterno'],jsonDatos['apellido_materno'],jsonDatos['edad'],jsonDatos['sexo'])}
-        elif request.method == 'DELETE':
-            return {"filas_afectadas": persona.eliminar(jsonDatos['id'])}
-        elif request.method == 'GET':
-            return {"datos":persona.getAll(jsonDatos['id'])}
     else:
+        if request.method == 'GET':
+            return {"datos":persona.getAll(int(request.args.get('id')))}
+        elif request.method == 'DELETE':
+            return {"filas_afectadas": persona.eliminar(request.headers['id'])}
         return 'No es un json'
 
     return 'Operaciones crud de persona'
@@ -125,11 +125,12 @@ def operaciones_usuario():
             return {"filas_afectadas": usuario.insertar(jsonDatos['id'], jsonDatos['usuario'], jsonDatos['contrasena'], jsonDatos['permisos'])}
         elif request.method == 'PUT':
             return {"filas_afectadas": usuario.actualizar(jsonDatos['id'], jsonDatos['usuario'], jsonDatos['contrasena'], jsonDatos['permisos'])}
-        elif request.method == 'DELETE':
-            return {"filas_afectadas": usuario.eliminar(jsonDatos['id'])}
-        elif request.method == 'GET':
-            return {"datos":usuario.getAll(jsonDatos['id'])}
     else:
+        if request.method == 'GET':
+            return {"datos":usuario.getAll(int(request.args.get('id')))}
+        elif request.method == 'DELETE':
+            return {"filas_afectadas": usuario.eliminar(request.headers['id'])}
+
         return 'No es un json'
 
     return 'Operaciones crud de usuario'
@@ -144,11 +145,13 @@ def operaciones_producto():
             return {"filas_afectadas": producto.insertar(jsonDatos['id_categoria'], jsonDatos['id_marca'], jsonDatos['modelo'], jsonDatos['existencias'], jsonDatos['precio'], jsonDatos['descripcion'], jsonDatos['codigo_barras'], jsonDatos['detalles_adicionales'])}
         elif request.method == 'PUT':
             return {"filas_afectadas": producto.actualizar(jsonDatos['id'], jsonDatos['id_categoria'], jsonDatos['id_marca'], jsonDatos['modelo'], jsonDatos['existencias'], jsonDatos['descripcion'], jsonDatos['codigo_barras'], jsonDatos['detalles_adicionales'])}
-        elif request.method == 'DELETE':
-            return {"filas_afectadas": producto.eliminar(jsonDatos['id'])}
-        elif request.method == 'GET':
-            return {"datos": producto.getAll(jsonDatos['id'])}
+
     else:
+        if request.method == 'GET':
+            return {"datos": producto.getAll(int(request.args.get('id')))}
+        elif request.method == 'DELETE':
+            return {"filas_afectadas": producto.eliminar(request.headers['id'])}
+
         return 'No es un json'
 
     return 'Operaciones crud de producto'
@@ -202,11 +205,13 @@ def operaciones_venta():
             id_venta = conexion.getMaxID('tbl_ventas', 'id_venta') + 1;
             venta.detalles(jsonDatos['detalle'])
             return {"filas_afectadas": venta.insertar(id_venta, jsonDatos['id_usuario_empleado'], jsonDatos['id_persona_cliente'], jsonDatos['fecha_hora'])}
-        elif request.method == 'DELETE':
-            return {"filas_afectadas": venta.eliminar(jsonDatos['id'])}
-        elif request.method == 'GET':
-            return {"datos": venta.getAll(jsonDatos['id'])}
+
     else:
+        if request.method == 'GET':
+            return {"datos": venta.getAll(int(request.args.get('id')))}
+        elif request.method == 'DELETE':
+            return {"filas_afectadas": venta.eliminar(request.headers['id'])}
+
         return 'No es un json'
 
     return 'Operaciones crud de venta'
@@ -221,11 +226,13 @@ def operaciones_adquisicion():
             id_adquisicion = conexion.getMaxID('tbl_adquisiciones', 'id_adquisicion') + 1;
             adquisicion.detalles(jsonDatos['detalle'])
             return {"filas_afectadas": adquisicion.insertar(id_adquisicion, jsonDatos['id_persona'], jsonDatos['fecha_hora'])}
-        elif request.method == 'DELETE':
-            return {"filas_afectadas": adquisicion.eliminar(jsonDatos['id'])}
-        elif request.method == 'GET':
-            return {"datos": adquisicion.getAll(jsonDatos['id'])}
+
     else:
+        if request.method == 'GET':
+            return {"datos": adquisicion.getAll(int(request.args.get('id')))}
+        elif request.method == 'DELETE':
+            return {"filas_afectadas": adquisicion.eliminar(request.headers['id'])}
+
         return 'No es un json'
 
     return 'Operaciones crud de adquisicion'
