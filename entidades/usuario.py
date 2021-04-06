@@ -21,6 +21,6 @@ class Usuario:
             respuesta = self.conexion.traerRegistros("SELECT * FROM tbl_usuarios WHERE id_persona="+str(id))
         arreglo = []
         for tupa_marca in respuesta:
-            json ={'id_persona': tupa_marca[0], 'marca': tupa_marca[1]}
+            json ={'id_persona': tupa_marca[0], 'usuario': tupa_marca[1], 'contrasena': tupa_marca[2], 'permisos': tupa_marca[3] }
             arreglo.append(json)
         return arreglo

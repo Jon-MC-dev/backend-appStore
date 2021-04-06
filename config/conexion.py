@@ -1,7 +1,7 @@
 from flaskext.mysql import MySQL
 class Conexion:
 
-    def __init__(self, app):
+    def __init__(self, app, conectar = False):
         self.numeroConsultas = 0;
         app.config['MYSQL_DATABASE_USER'] = 'root'
         app.config['MYSQL_DATABASE_PASSWORD'] = ''
@@ -9,33 +9,36 @@ class Conexion:
         app.config['MYSQL_DATABASE_HOST'] = 'localhost'
         self.mysql = MySQL()
         self.mysql.init_app(app)
+        if conectar:
+            self.conectar()
 
 
     def conectar(self):
-        self.numeroConsultas = self.numeroConsultas+1;
-        print("NUMERO CONSULTAS: ["+str(self.numeroConsultas)+"]")
         self.conexion = self.mysql.connect() # conexion al SGDB
+
+
+    def cursor_open(self):
         self.cursor = self.conexion.cursor() # Obtener Cursor
 
 
-    def desconectar(self):
+    def cursor_close(self):
         self.cursor.close()
 
 
     def insetar_actualizar_eliminar(self, sql):
-        self.conectar()
+        self.cursor_open()
         filas_afectadas = self.cursor.execute(sql)
         self.conexion.commit()
-        self.desconectar()
+        self.cursor_close()
         return filas_afectadas
 
 
     def traerRegistros(self,sql):
-        self.conectar()
+        self.cursor_open()
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         self.conexion.commit()
-        self.desconectar()
+        self.cursor_close()
         return data
 
 

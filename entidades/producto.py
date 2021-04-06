@@ -29,6 +29,6 @@ class Producto:
             respuesta = self.conexion.traerRegistros("SELECT * FROM tbl_productos WHERE id_producto="+str(id))
         arreglo = []
         for tupa_marca in respuesta:
-            json ={'id_producto':tupa_marca[0], 'id_categoria':tupa_marca[1], 'id_marca':tupa_marca[2], 'modelo':tupa_marca[3], 'existencias':tupa_marca[4], 'descripcion':tupa_marca[5], 'codigo_barras':tupa_marca[6], 'detalles_adicionales':tupa_marca[7]}
+            json ={'id_producto':tupa_marca[0], 'id_categoria':tupa_marca[1], 'id_marca':tupa_marca[2], 'modelo':tupa_marca[3], 'existencias':tupa_marca[4], 'precio':tupa_marca[5], 'descripcion':tupa_marca[6], 'codigo_barras':tupa_marca[7], 'detalles_adicionales':tupa_marca[8]}
             arreglo.append(json)
         return arreglo

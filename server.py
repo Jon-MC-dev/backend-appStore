@@ -18,13 +18,14 @@ from entidades.adqisicion import Adquisicion
 from entidades.detalle_adquisicion import DetalleAdquisicion
 
 app = Flask(__name__)
-conexion = Conexion(app)
-marca = Marca(conexion)
-categoria = Categoria(conexion)
+conexion = Conexion(app, True)
+#
+marca = Marca(Conexion(app, True))
+categoria = Categoria(Conexion(app, True))
 color = Color(conexion)
 persona = Persona(conexion)
 usuario = Usuario(conexion)
-producto = Producto(conexion)
+producto = Producto(Conexion(app, True))
 fotografia = Fotografia(conexion)
 venta = Venta(conexion, DetalleVenta(conexion))
 adquisicion = Adquisicion(conexion, DetalleAdquisicion(conexion))
@@ -102,9 +103,9 @@ def operaciones_persona():
     if request.is_json:
         jsonDatos = request.get_json()
         if request.method == 'POST':
-            return {"filas_afectadas": persona.insertar(jsonDatos['nombre'], jsonDatos['apellido_paterno'], jsonDatos['apellido_materno'], jsonDatos['edad'], jsonDatos['sexo'])}
+            return {"filas_afectadas": persona.insertar(jsonDatos['nombre'], jsonDatos['apellido_paterno'], jsonDatos['apellido_materno'], jsonDatos['fechaNaci'], jsonDatos['sexo'])}
         elif request.method == 'PUT':
-            return {"filas_afectadas": persona.actualizar(jsonDatos['id'], jsonDatos['nombre'], jsonDatos['apellido_paterno'],jsonDatos['apellido_materno'],jsonDatos['edad'],jsonDatos['sexo'])}
+            return {"filas_afectadas": persona.actualizar(jsonDatos['id'], jsonDatos['nombre'], jsonDatos['apellido_paterno'],jsonDatos['apellido_materno'],jsonDatos['fechaNaci'],jsonDatos['sexo'])}
     else:
         if request.method == 'GET':
             return {"datos":persona.getAll(int(request.args.get('id')))}
@@ -127,7 +128,7 @@ def operaciones_usuario():
             return {"filas_afectadas": usuario.actualizar(jsonDatos['id'], jsonDatos['usuario'], jsonDatos['contrasena'], jsonDatos['permisos'])}
     else:
         if request.method == 'GET':
-            return {"datos":usuario.getAll(int(request.args.get('id')))}
+            return {"datos": usuario.getAll(int(request.args.get('id')))}
         elif request.method == 'DELETE':
             return {"filas_afectadas": usuario.eliminar(request.headers['id'])}
 
@@ -237,6 +238,12 @@ def operaciones_adquisicion():
 
     return 'Operaciones crud de adquisicion'
 
+
+@app.route('/maxID')
+def getMaxID():
+    if request.method == 'GET':
+        return {"numMax": conexion.getMaxID(request.args.get('tbl'), request.args.get('campo'))}
+    return 'getMaxID'
 
 
 if __name__== '__main__':
